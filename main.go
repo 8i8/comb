@@ -11,6 +11,12 @@ import (
 	"github.com/google/uuid"
 )
 
+// NullUUID mimics the behaviour of the sql.Null* types
+type NullUUID struct {
+	uuid.UUID
+	Valid bool
+}
+
 func uint64ToBytes(b []byte, n int, v uint64) {
 	_ = b[n-1] // early bounds check
 	for i := 0; i < n; i++ {
