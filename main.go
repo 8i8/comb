@@ -1,3 +1,9 @@
+// package comb generates a UUID with 73bits of cryptographically random data
+// in its first 10 bytes, and 6 bytes of timestamp data after that, the
+// timestamp has a 10th of a millisecond precision and covers a temporal range
+// of 892 years before wrapping.  7 bits are used to set values so as to
+// remain rfc4122 compatible, comprising of the variant and version
+// information, variant future and version 6.
 package comb
 
 import (
@@ -120,20 +126,19 @@ func timeRange(wordSize uint64, timeResolution time.Duration) {
 	const avgYear = 365.24219
 	const secPerDay = 88400
 
-	partsPerSecond := time.Second / timeResolution  // Translate duration into parts per second.
-	normalised := 1/float64(partsPerSecond)
+	partsPerSecond := time.Second / timeResolution // Translate duration into parts per second.
+	normalised := 1 / float64(partsPerSecond)
 	units := int64(math.Pow(2, float64(wordSize))) // Total units available.
 
-	seconds := units / int64(partsPerSecond)       // Length of that time in seconds.
+	seconds := units / int64(partsPerSecond) // Length of that time in seconds.
 	unitsRmn := units % int64(partsPerSecond)
 
 	days := seconds / secPerDay // Length of that time in days.
 	secondsRmn := seconds % secPerDay
 
 	years := int64(float64(days) / avgYear) //Length of that time in years.
-	daysRemainder := (float64(days) / avgYear)-float64(years)
+	daysRemainder := (float64(days) / avgYear) - float64(years)
 	daysRmn := int64(daysRemainder * avgYear)
 
-	fmt.Printf("%d years %d days %f seconds\n", years, daysRmn, float64(secondsRmn)+ (normalised*float64(unitsRmn)))
+	fmt.Printf("%d years %d days %f seconds\n", years, daysRmn, float64(secondsRmn)+(normalised*float64(unitsRmn)))
 }
-
