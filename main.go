@@ -28,7 +28,7 @@ type NullUUID struct {
 func uint64ToBytes(b []byte, n int, v uint64) {
 	_ = b[n-1] // early bounds check
 	for i := 0; i < n; i++ {
-		b[i] = byte(v >> (1 << (n - 1 - i)))
+		b[n-1-i] = byte(v >> (i * 8))
 	}
 }
 
@@ -40,7 +40,7 @@ func bytesToUint64(b []byte, n int) uint64 {
 	}
 	var val uint64
 	for i := 0; i < n; i++ {
-		val |= uint64(b[n-1-i]) << (i * lenInt)
+		val |= uint64(b[n-1-i]) << (i * 8)
 	}
 	return val
 }
