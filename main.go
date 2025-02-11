@@ -127,7 +127,7 @@ func CustomTimeStampedUUID(r io.Reader, nBytes int, t uuid.Time, res time.Durati
 // an integer for the specified word size.
 func timeRange(wordSize uint64, timeResolution time.Duration) {
 	const avgYear = 365.24219
-	const secPerDay = 88400
+	const secPerDay = 86400
 
 	partsPerSecond := time.Second / timeResolution // Translate duration into parts per second.
 	normalised := 1 / float64(partsPerSecond)
