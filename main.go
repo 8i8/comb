@@ -70,12 +70,15 @@ func NewTimeStampedUUID() (uuid.UUID, error) {
 	return CustomTimeStampedUUID(rand.Reader, 6, now, time.Millisecond/10, true)
 }
 
+const tenthMillisecond = time.Second / 10
+
 func SetTimeStamp(id uuid.UUID, nBytes int, t uuid.Time, res time.Duration) (uuid.UUID, error) {
 	// Translate duration into parts per second, the time is already being
 	// returned from GetTime in 100th's of a nano second, dividing 1e8 by
 	// the resolution gives us the correct numerator when using this time
 	// format.
-	res = time.Second / 10 / res // Translate duration into parts per second.
+
+	res = tenthMillisecond / res
 	if nBytes > len(id) {
 		return id, errors.New("to many bytes to format")
 	}
