@@ -86,7 +86,7 @@ func SetTimeStamp(id uuid.UUID, nBytes int, t uuid.Time, res time.Duration) (uui
 	// Write the first 6 bytes with the least significant 6 bytes of the
 	// current Time as measured in 100s of microseconds since 15 Oct 1582.
 	mask := uint64(1<<uint64(nBytes*8) - 1)
-	timeBytes := uint64(math.Round((float64(t) / float64(res)))) & mask
+	timeBytes := (uint64(t) / uint64(res)) & mask
 	uint64ToBytes(id[len(id)-nBytes:], nBytes, timeBytes)
 	return id, nil
 }
