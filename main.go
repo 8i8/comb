@@ -101,13 +101,13 @@ func CustomTimeStampedUUID(r io.Reader, nBytes int, t uuid.Time, res time.Durati
 		return id, fmt.Errorf("%s: %w", fname, err)
 	}
 
-	id, err = SetTimeStamp(id, nBytes, t, res)
+	// Fill bytes with values from the io.Reader.
+	_, err = io.ReadFull(r, id[:len(id)-nBytes])
 	if err != nil {
 		return fail(err)
 	}
 
-	// Fill the remaining bytes with values from the io.Reader.
-	_, err = io.ReadFull(r, id[:len(id)-nBytes])
+	id, err = SetTimeStamp(id, nBytes, t, res)
 	if err != nil {
 		return fail(err)
 	}
